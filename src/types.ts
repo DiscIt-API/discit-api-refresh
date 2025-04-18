@@ -13,4 +13,5 @@ export interface IConfig {
 	REFRESH_DISCS_START: boolean;
 	REFRESH_DISCS_CRON: boolean;
 	DISCIT_URL: string;
+	BACKUP_DIR: string;
 }

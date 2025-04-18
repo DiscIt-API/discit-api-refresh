@@ -5,6 +5,7 @@ import { Config } from "./config";
 import { DISC_FETCH_URL, Site } from "./constants";
 import {
 	discMeetsMinCriteria,
+	getSafeISODateString,
 	getTimestamp,
 	hashString,
 	parseCategory,
@@ -50,6 +51,10 @@ const backupDiscs = async () => {
 		console.log("Getting all existing discs from database...");
 		const existingDiscs = await getAllDiscs();
 		console.log(`${existingDiscs.length} existing discs in database.`);
+		console.log(`Backing up existing discs to ${Config.BACKUP_DIR}...`);
+		const backupPath = `${Config.BACKUP_DIR}/discs_${getSafeISODateString()}.json`;
+		await Bun.write(backupPath, JSON.stringify(existingDiscs));
+		console.log(`Existing discs backed up to ${backupPath}.`);
 		return existingDiscs;
 	} catch (error) {
 		throw new Error(`${error} - Error backing up existing discs.`);

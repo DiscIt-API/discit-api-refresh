@@ -90,3 +90,12 @@ export const isAlphaNumeric = (str: string): boolean => {
 
 export const getTimestamp = () =>
 	new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+
+export const getSafeISODateString = (date = new Date()) => {
+	// Get ISO string and remove milliseconds + 'Z'
+	const iso = date.toISOString().split(".")[0];
+
+	// Replace characters not safe in filenames
+	// `:` becomes `-`, and we keep `T` for readability
+	return iso.replace(/:/g, "-");
+};
