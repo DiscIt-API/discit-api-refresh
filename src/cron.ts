@@ -10,7 +10,9 @@ export class Cron {
 		Cron.EveryNightAtMidnight,
 		() => {
 			if (!Config.REFRESH_DISCS_CRON) return;
-			console.log("REFRESH_DISCS_CRON is set to true. Starting disc refresh process...");
+			console.log(
+				"REFRESH_DISCS_CRON env var is set to 'true'. Starting cron disc refresh process..."
+			);
 			refreshDiscs();
 		},
 		null,
