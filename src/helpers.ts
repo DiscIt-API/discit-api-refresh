@@ -25,25 +25,27 @@ export const regexify = (field: string) => ({ $regex: field, $options: "i" });
 
 export const hashString = (toHash: string) => uuidv5(toHash, ID_HASH_NAMESPACE);
 
-export const writeDataToFile = async (data: unknown, path: string) => await Bun.write(path, JSON.stringify(data));
+export const writeDataToFile = async (data: unknown, path: string) =>
+	await Bun.write(path, JSON.stringify(data));
 
 export const parseCategory = (category: string) => CategoryMap.get(category) || category;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const parseStability = (element: any, turn: string, fade: string) => {
+export const parseStability = (element: Element, turn: string, fade: string) => {
 	if (element) {
-		const classes: string = element.parentNode.parentNode.parentNode.className;
+		const classes: string = (element.parentNode?.parentNode?.parentNode as Element).className;
 		const classesSplit = classes.split(" ");
 
 		// check for stability via class name in html
 		for (let i = classesSplit.length - 1; i >= 0; i--) {
 			const stability = classesSplit[i];
-			if (Array.from(StabilityMap.keys()).includes(stability)) return StabilityMap.get(stability);
+			if (Array.from(StabilityMap.keys()).includes(stability))
+				return StabilityMap.get(stability);
 		}
 	}
 
 	// if not found in html, calculate it based on turn and fade
-	const diff = parseFloat(turn) + parseFloat(fade);
+	const diff = Number.parseFloat(turn) + Number.parseFloat(fade);
 	switch (true) {
 		case diff >= 4:
 			return "Very Overstable";
@@ -70,7 +72,9 @@ export const parseDecimalString = (decimal: string) => {
 export const newId = () => uuidv4();
 
 export const isAlphaNumeric = (str: string): boolean => {
-	let code: number, i: number, len: number;
+	let code: number;
+	let i: number;
+	let len: number;
 	for (i = 0, len = str.length; i < len; i++) {
 		code = str.charCodeAt(i);
 		if (

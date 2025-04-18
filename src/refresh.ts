@@ -164,7 +164,9 @@ const processDiscs = (collections: IDiscCollections) => {
 			if (nameSlugSet.has(name_slug)) {
 				console.warn(`Duplicate name_slug found: "${name_slug}"`);
 				const lastChar = name_slug.slice(-1);
-				const lastCharNum = "0123456789".includes(lastChar) ? parseInt(lastChar) : null;
+				const lastCharNum = "0123456789".includes(lastChar)
+					? Number.parseInt(lastChar)
+					: null;
 				const numToAppend = typeof lastCharNum === "number" ? lastCharNum + 1 : 2;
 				name_slug = `${name_slug.slice(0, -1)}${numToAppend}`;
 				discsToInsertRef[i].name_slug = name_slug;

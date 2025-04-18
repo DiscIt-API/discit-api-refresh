@@ -9,4 +9,6 @@ export const Config = {
 } as IConfig;
 
 if (!Config.API_KEY)
-	throw new Error("API_KEY is not defined! Must be set equal to the API_KEY in the discit-api project.");
+	throw new Error(
+		"API_KEY is not defined! Must be set equal to the API_KEY in the discit-api project."
+	);
