@@ -46,7 +46,7 @@ jobs:
         Type=simple
         User=pi
         WorkingDirectory=$APP_DIR
-        ExecStart=main
+        ExecStart=$APP_DIR/main
         StandardOutput=append:$ENV_DIR/$LOG_FILE
         StandardError=inherit
         Restart=on-failure
