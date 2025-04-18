@@ -5,6 +5,7 @@ import { Config } from "./config";
 import { DISC_FETCH_URL, Site } from "./constants";
 import {
 	discMeetsMinCriteria,
+	getTimestamp,
 	hashString,
 	parseCategory,
 	parseDecimalString,
@@ -22,7 +23,7 @@ virtualConsole.on("error", () => {
 
 export const refreshDiscs = async () => {
 	try {
-		console.log("*** START *** - disc refresh process starting.");
+		console.log(`*** START *** - disc refresh process starting at ${getTimestamp()}`);
 		const existingDiscs = await backupDiscs();
 		const discCollections = await getDiscs();
 		const discsToInsert = processDiscs(discCollections);
@@ -33,10 +34,14 @@ export const refreshDiscs = async () => {
 		} else {
 			console.log("Database is up-to-date. No further action needed.");
 		}
-		console.log("*** END *** - disc refresh process completed successfully.");
+		console.log(
+			`*** END *** - disc refresh process completed successfully at ${getTimestamp()}`
+		);
 	} catch (error) {
 		console.error(error);
-		console.error("*** ABEND *** - disc refresh process completed with errors.");
+		console.error(
+			`*** ABEND *** - disc refresh process completed with errors at ${getTimestamp()}`
+		);
 	}
 };
 

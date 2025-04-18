@@ -1,0 +1,58 @@
+name: deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    environment: Raspberry Pi 5
+    env:
+      APP_NAME: discit-api-refresh
+      APP_DIR: /home/pi/apps/discit-api-refresh
+      ENV_DIR: /home/pi/env/discit-api-refresh
+      LOG_FILE: refresh.log
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies and lint project
+      run: |
+        bun install --ignore-scripts --frozen-lockfile
+        bun run biome ci .
+
+    - name: Compile app to standalone binary
+      run: bun run compile
+
+    - name: Copy files to app directory
+      run: |
+        rm -rf $APP_DIR && mkdir $APP_DIR
+        cp main $APP_DIR/main
+        cp -r $ENV_DIR/{*,.[^.]*} $APP_DIR/
+        rm $APP_DIR/$LOG_FILE
+
+    - name: Install/update systemd service to run app
+      run: |
+        cat > /tmp/$APP_NAME.service << EOF
+        [Unit]
+        Description=$APP_NAME
+        After=network.target
+
+        [Service]
+        Type=simple
+        User=pi
+        WorkingDirectory=$APP_DIR
+        ExecStart=main
+        StandardOutput=append:$ENV_DIR/$LOG_FILE
+        StandardError=inherit
+        Restart=on-failure
+
+        [Install]
+        WantedBy=multi-user.target
+        EOF
+        sudo mv /tmp/$APP_NAME.service /etc/systemd/system/
+        sudo systemctl daemon-reload
+        sudo systemctl enable $APP_NAME.service
+        sudo systemctl restart $APP_NAME.service
+        sudo systemctl status $APP_NAME.service
