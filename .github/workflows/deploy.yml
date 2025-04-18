@@ -30,7 +30,7 @@ jobs:
 
     - name: Copy files to app directory
       run: |
-        mkdir -p $APP_DIR && rm -rf $APP_DIR/*
+        rm -rf $APP_DIR && mkdir -p $APP_DIR
         cp main $APP_DIR/main
         cp -r $ENV_DIR/{*,.[^.]*} $APP_DIR/
         rm $APP_DIR/$LOG_FILE
