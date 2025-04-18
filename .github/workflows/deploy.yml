@@ -32,7 +32,7 @@ jobs:
       run: |
         rm -rf $APP_DIR && mkdir $APP_DIR
         cp main $APP_DIR/main
-        cp -rf $ENV_DIR/{*,.[^.]*} $APP_DIR/
+        cp $ENV_DIR/.env $APP_DIR/.env
         rm -f $APP_DIR/$LOG_FILE
 
     - name: Install/update systemd service to run app
