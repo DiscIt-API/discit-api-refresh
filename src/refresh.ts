@@ -52,7 +52,7 @@ const backupDiscs = async () => {
 		const existingDiscs = await getAllDiscs();
 		console.log(`${existingDiscs.length} existing discs in database.`);
 		console.log(`Backing up existing discs to ${Config.BACKUP_DIR}...`);
-		const backupPath = `${Config.BACKUP_DIR}/discs_${getSafeISODateString()}.json`;
+		const backupPath = `${Config.BACKUP_DIR}/discs_${getSafeISODateString()}_count_${existingDiscs.length}.json`;
 		await Bun.write(backupPath, JSON.stringify(existingDiscs));
 		console.log(`Existing discs backed up to ${backupPath}.`);
 		return existingDiscs;
