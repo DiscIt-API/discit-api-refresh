@@ -1,6 +1,6 @@
 import jsdom from "jsdom";
 
-import { deleteAllDiscs, getAllDiscs, insertDiscs, revalidateDiscItCache } from "./api";
+import { deleteAllDiscs, getAllDiscs, insertDiscs } from "./api";
 import { Config } from "./config";
 import { DISC_FETCH_URL, Site } from "./constants";
 import {
@@ -31,7 +31,6 @@ export const refreshDiscs = async () => {
 		if (discsToInsert.length >= existingDiscs.length) {
 			await doDeleteAllDiscs();
 			await doInsertDiscs(discsToInsert);
-			await doRevalidateDiscItCache();
 		} else {
 			console.log("Database is up-to-date. No further action needed.");
 		}
@@ -215,20 +214,5 @@ const doInsertDiscs = async (discsToInsert: IDisc[]) => {
 		console.log(`${discsToInsert.length} discs inserted.`);
 	} catch (error) {
 		throw new Error(`${error} - Error inserting discs into database.`);
-	}
-};
-
-const doRevalidateDiscItCache = async () => {
-	try {
-		if (!Config.DISCIT_URL) {
-			console.log("DISCIT_URL env var is not defined. Skipping DiscIt cache revalidation.");
-			return;
-		}
-		console.log("Revalidating DiscIt cache...");
-		const { ok, status } = await revalidateDiscItCache();
-		if (!ok) throw `Bad response status: ${status}`;
-		console.log("DiscIt cache revalidated.");
-	} catch (error) {
-		throw new Error(`${error} - Error revalidating DiscIt cache.`);
 	}
 };

@@ -8,10 +8,9 @@ export interface IDiscCollections {
 }
 
 export interface IConfig {
-	API_BASE_URL: string;
+	API_URL: string;
 	API_KEY: string;
 	REFRESH_DISCS_START: boolean;
 	REFRESH_DISCS_CRON: boolean;
-	DISCIT_URL: string;
 	BACKUP_DIR: string;
 }
