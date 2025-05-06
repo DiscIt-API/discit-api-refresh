@@ -19,7 +19,8 @@ export const slugify = (text: string) =>
 	text
 		.toLowerCase()
 		.replace(/[/\\#,+()$~%!@^|`.'":;*?<>{}[\]]/g, "")
-		.replace(/[ ]/g, "-");
+		.replace(/[ ]/g, "-")
+		.replace(/--/g, "");
 
 export const regexify = (field: string) => ({ $regex: field, $options: "i" });
 
