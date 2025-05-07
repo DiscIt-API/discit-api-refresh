@@ -3,7 +3,7 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "scripts": {
-    "prepare": "lefthook install",
+    "prepare": "bun run lefthook.ts",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check .",
