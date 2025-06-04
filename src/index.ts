@@ -1,9 +1,14 @@
+import { dns } from "bun";
+
 import { Config } from "./config";
+import { DISC_FETCH_URL } from "./constants";
 import { Cron } from "./cron";
 import { getTimestamp } from "./helpers";
 import { refreshDiscs } from "./refresh";
 
 console.log(`Service started at ${getTimestamp()}`);
+
+dns.prefetch(DISC_FETCH_URL);
 
 if (Config.REFRESH_DISCS_CRON) {
 	console.log("REFRESH_DISCS_CRON env var is set to 'true' - starting disc refresh cron job...");
